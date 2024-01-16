@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "dreamhack cli",
   "main": "src/index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "c": "node src/create.js",
@@ -24,5 +24,8 @@
   "homepage": "https://github.com/sihyeokpark/dreamhack-cli#readme",
   "devDependencies": {
     "axios": "^1.6.5"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.10"
   }
 }
