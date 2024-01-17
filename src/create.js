@@ -1,10 +1,9 @@
 import axios from 'axios'
 import AdmZip from 'adm-zip'
-import { execSync } from 'child_process'
 
 import login from './util/login.js'
 import downloadFile from './util/downloadFile.js'
-import docker from './util/docker.js'
+import Docker from './util/docker.js'
 
 async function create(wargameLink, PORT=80) {
   const sessionid = await login()
@@ -26,9 +25,9 @@ async function create(wargameLink, PORT=80) {
   const zip = new AdmZip(`${wargameName}.zip`)
   zip.extractAllTo(`./${wargameName}`, true)
 
-  docker.build(wargameName, `./${wargameName}`)
-
-  docker.run(wargameName, PORT)
+  const docker = new Docker(wargameName, `./${wargameName}`, PORT)
+  docker.build()
+  docker.run()
 
   console.log()
 }
