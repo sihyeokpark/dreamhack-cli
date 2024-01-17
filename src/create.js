@@ -4,8 +4,8 @@ import AdmZip from 'adm-zip'
 
 import login from './util/login.js'
 import downloadFile from './util/downloadFile.js'
-import Docker from './util/docker.js'
-import Wargame from './util/wargame.js'
+import Docker from './class/docker.js'
+import Wargame from './class/wargame.js'
 
 async function create(wargameLink, PORT=80) {
   const sessionid = await login()
