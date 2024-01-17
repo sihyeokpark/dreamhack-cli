@@ -4,6 +4,7 @@ import { execSync } from 'child_process'
 
 import login from './util/login.js'
 import downloadFile from './util/downloadFile.js'
+import docker from './util/docker.js'
 
 async function create(wargameLink, PORT=80) {
   const sessionid = await login()
@@ -25,13 +26,9 @@ async function create(wargameLink, PORT=80) {
   const zip = new AdmZip(`${wargameName}.zip`)
   zip.extractAllTo(`./${wargameName}`, true)
 
-  let dockerCMD = `docker build -t ${wargameName.toLowerCase()} ./${wargameName}`
-  console.log(`[*] Docker Build - ${dockerCMD}`)
-  await execSync(dockerCMD)
+  docker.build(wargameName, `./${wargameName}`)
 
-  dockerCMD = `docker run -dp ${PORT}:${PORT} ${wargameName.toLowerCase()}` // if web
-  console.log(`[*] Docker Run - ${dockerCMD}`)
-  await execSync(dockerCMD)
+  docker.run(wargameName, PORT)
 
   console.log()
 }
