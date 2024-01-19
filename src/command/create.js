@@ -1,13 +1,13 @@
 import fs from 'fs'
 import AdmZip from 'adm-zip'
 
-import User from './class/user.js'
-import Docker from './class/docker.js'
-import Wargame from './class/wargame.js'
+import User from '../class/user.js'
+import Docker from '../class/docker.js'
+import Wargame from '../class/wargame.js'
 
-import Log from './util/log.js'
-import downloadFile from './util/downloadFile.js'
-import getArgs from './util/getArgs.js'
+import Log from '../util/log.js'
+import downloadFile from '../util/downloadFile.js'
+import getArgs from '../util/getArgs.js'
 
 const { email: EMAIL, password: PASSWORD } = JSON.parse(fs.readFileSync('./src/data/user.json', 'utf8'))
 
@@ -36,6 +36,8 @@ async function create(wargameLink) {
     if (buildSuccess) {
       await docker.run()
       await docker.getPort()
+    } else {
+      process.exit(1)
     }
   }
 

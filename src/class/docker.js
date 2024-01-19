@@ -21,10 +21,10 @@ export default class Docker {
   }
   
   async run() {
-    const cmd = `docker run -dP ${this.name}` // if web
+    const cmd = `docker run -dP ${this.name}`
     Log.info(`Docker Run - ${cmd}`)
     this.id = (await execSync(cmd)).toString().slice(0, 12)
-    Log.info(`Docker ID: ${this.id}`)
+    Log.info(`Docker ID - ${this.id}`)
   }
 
   static async ps() {
@@ -37,7 +37,7 @@ export default class Docker {
     const containers = await Docker.ps()
     const container = containers.filter(container => container[0] === this.id)[0]
     const port = container[5].split('->')[0].split(':')[1]
-    Log.info(`Link: http://localhost:${port}`)
+    Log.info(`Link - http://localhost:${port}`)
 
     return port
   }

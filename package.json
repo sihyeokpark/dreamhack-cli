@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "c": "node src/create.js",
+    "c": "node src/command/create.js",
     "l": "node src/util/login.js"
   },
   "repository": {
