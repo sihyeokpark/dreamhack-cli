@@ -26,6 +26,7 @@
     "axios": "^1.6.5"
   },
   "dependencies": {
-    "adm-zip": "^0.5.10"
+    "adm-zip": "^0.5.10",
+    "chalk": "^5.3.0"
   }
 }
