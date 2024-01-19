@@ -8,15 +8,31 @@ export default class Docker {
   }
 
   async build() {
-    const dockerCMD = `docker build -t ${this.name} ${this.path}`
-    console.log(`[*] Docker Build - ${dockerCMD}`)
-    await execSync(dockerCMD)
+    const cmd = `docker build -t ${this.name} ${this.path}`
+    console.log(`[*] Docker Build - ${cmd}`)
+    await execSync(cmd)
   }
   
-  async run() { // TODO: every port
-    const dockerCMD = `docker run -dp ${this.port}:${this.port} ${this.name}` // if web
-    console.log(`[*] Docker Run - ${dockerCMD}`)
-    await execSync(dockerCMD)
+  async run() {
+    const cmd = `docker run -dP ${this.name}` // if web
+    console.log(`[*] Docker Run - ${cmd}`)
+    this.id = (await execSync(cmd)).toString().slice(0, 12)
+    console.log(`[*] Docker ID: ${this.id}`)
+  }
+
+  static async ps() {
+    const cmd = 'docker ps'
+    const containers = (await execSync(cmd)).toString().split('\n').slice(1, -1).map(container => container.split('   '))
+    return containers
+  }
+
+  async getPort() {
+    const containers = await Docker.ps()
+    const container = containers.filter(container => container[0] === this.id)[0]
+    const port = container[5].split('->')[0].split(':')[1]
+    console.log(`[*] Link: http://localhost:${port}`)
+
+    return port
   }
 
   static async getDockerfile() {
@@ -24,4 +40,3 @@ export default class Docker {
      * 2. if there is Dockerfiles(They can be multiple), return paths of all Dockerfiles */
   }
 }
-

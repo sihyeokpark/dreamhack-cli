@@ -4,10 +4,15 @@ import AdmZip from 'adm-zip'
 
 import login from './util/login.js'
 import downloadFile from './util/downloadFile.js'
+import getArgs from './util/getArgs.js'
 import Docker from './class/docker.js'
 import Wargame from './class/wargame.js'
 
-async function create(wargameLink, PORT=80) {
+
+async function create(wargameLink) {
+  const args = getArgs()
+  const PORT=80 // will be changed
+
   const sessionid = await login()
 
   const wargame = new Wargame(wargameLink)
@@ -22,9 +27,12 @@ async function create(wargameLink, PORT=80) {
   await fs.unlinkSync(`${wargame.name}.zip`)
   console.log('[*] Wargame Zip File Removed')
 
-  const docker = new Docker(wargame.name, `./${wargame.name}`, PORT)
-  docker.build()
-  docker.run()
+  if (args['d'] || args['docker']) {
+    const docker = new Docker(wargame.name, `./${wargame.name}`, PORT)
+    docker.build()
+    docker.run()
+    docker.getPort()
+  }
 
   console.log()
 }
