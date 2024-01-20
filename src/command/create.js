@@ -11,7 +11,7 @@ import getArgs from '../util/getArgs.js'
 
 const { email: EMAIL, password: PASSWORD } = JSON.parse(fs.readFileSync('./src/data/user.json', 'utf8'))
 
-async function create(wargameLink) {
+export default async function create(wargameLink) {
   const args = getArgs()
 
   const user = new User(EMAIL, PASSWORD)
@@ -43,5 +43,3 @@ async function create(wargameLink) {
 
   console.log()
 }
-
-create(process.argv[2])

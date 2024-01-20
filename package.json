@@ -4,10 +4,11 @@
   "description": "dreamhack cli",
   "main": "src/index.js",
   "type": "module",
+  "bin": {
+    "dh": "./src/index.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "c": "node src/command/create.js",
-    "l": "node src/util/login.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

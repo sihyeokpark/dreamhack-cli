@@ -37,7 +37,7 @@ export default class Docker {
     const containers = await Docker.ps()
     const container = containers.filter(container => container[0] === this.id)[0]
     const port = container[5].split('->')[0].split(':')[1]
-    Log.info(`Link - http://localhost:${port}`)
+    Log.success(`Link\n- http://localhost:${port}\n- localhost ${port}`)
 
     return port
   }
