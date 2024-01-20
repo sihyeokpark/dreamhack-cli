@@ -1,17 +1,19 @@
 # dreamhack-cli
 > dreamhack-cli는 드림핵 문제 풀이 환경을 더 쉽고 간편하게 설정하는 툴입니다.
 
+![Alt text](<preview.png>)
+
 ## how to use?
 1. install package
-```bash
+```sh
 npm install -g dreamhack-cli
 ```
 2. config user information
-```bash
+```sh
 dh config --email=<email> --password=<password>
 ```
 3. create wargame
-```bash
+```sh
 dh create https://dreamhack.io/wargame/challenges/1081 -d
 ```
 
