@@ -1,5 +1,7 @@
 import fs from 'fs'
+import path from 'path'
 import AdmZip from 'adm-zip'
+import { fileURLToPath } from "url"
 
 import User from '../class/user.js'
 import Docker from '../class/docker.js'
@@ -9,7 +11,8 @@ import Log from '../util/log.js'
 import downloadFile from '../util/downloadFile.js'
 import getArgs from '../util/getArgs.js'
 
-const { email: EMAIL, password: PASSWORD } = JSON.parse(fs.readFileSync('./src/data/user.json', 'utf8'))
+const __dirname = fileURLToPath(new URL(".", import.meta.url))
+const { email: EMAIL, password: PASSWORD } = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/user.json'), 'utf8'))
 
 export default async function create(wargameLink) {
   const args = getArgs()
