@@ -4,16 +4,21 @@ import fs from 'fs'
 import path from 'path'
 
 import { fileURLToPath } from "url"
-
 const __dirname = fileURLToPath(new URL(".", import.meta.url))
 
-fs.readdirSync(path.join(__dirname, `./command`)).forEach(async (file) => {
-  if (file === process.argv[2] + '.js') {
-    const { default: command} = await import('file:///'+path.join(__dirname, `./command/${file}`))
-    command(process.argv[3])
-    process.exit(0)
+async function main() {
+  const files = await fs.readdirSync(path.join(__dirname, `./command`))
+  for (let i = 0; i < files.length; i++) {
+    if (files[i] === process.argv[2] + '.js') {
+      const { default: command} = await import('file:///'+path.join(__dirname, `./command/${files[i]}`))
+      await command(process.argv[3])
+      return true
+    }
   }
-})
 
-const { default: command} = await import('file:///'+path.join(__dirname, `./command/help.js`))
-command()
+  const { default: command} = await import('file:///'+path.join(__dirname, `./command/help.js`))
+  await command()
+  return false
+}
+
+main()
