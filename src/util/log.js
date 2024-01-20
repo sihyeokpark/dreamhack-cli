@@ -12,4 +12,8 @@ export default class Log {
   static success(message) {
     console.log(chalk.green(`[+] ${message}`))
   }
+
+  static print(message) {
+    console.log(message)
+  }
 }
