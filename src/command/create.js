@@ -12,7 +12,14 @@ import downloadFile from '../util/downloadFile.js'
 import getArgs from '../util/getArgs.js'
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url))
-const { email: EMAIL, password: PASSWORD } = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/user.json'), 'utf8'))
+let EMAIL, PASSWORD
+try {
+  const { email, password } = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/user.json'), 'utf8'))
+  [EMAIL, PASSWORD] = [email, password]
+} catch (err) {
+  Log.error('User config not found. Please run \'dh config\' to set user config.')
+  process.exit(1)
+}
 
 export default async function create(wargameLink) {
   const args = getArgs()

@@ -11,5 +11,9 @@ fs.readdirSync(path.join(__dirname, `./command`)).forEach(async (file) => {
   if (file === process.argv[2] + '.js') {
     const { default: command} = await import('file:///'+path.join(__dirname, `./command/${file}`))
     command(process.argv[3])
+    process.exit(0)
   }
 })
+
+const { default: command} = await import('file:///'+path.join(__dirname, `./command/help.js`))
+command()
