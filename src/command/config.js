@@ -11,16 +11,21 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url))
 export default async function config() {
   const args = getArgs()
   
-  let [email, password] = ['', '']
+  let EMAIL = ''
+  let PASSWORD = ''
   try {
-    email, password = JSON.parse(await fs.readFileSync(path.join(__dirname, '../data/user.json')))
-  } catch (err) {}
-  if (args['email']) email = args['email']
-  if (args['password']) password = args['password']
+    const { email, password } = JSON.parse(await fs.readFileSync(path.join(__dirname, '../data/user.json')))
+    EMAIL = email
+    PASSWORD = password
+  } catch (err) {
+    // console.log(err)
+  }
+  if (args['email']) EMAIL = args['email']
+  if (args['password']) PASSWORD = args['password']
 
-  await fs.writeFileSync(path.join(__dirname, '../data/user.json'), JSON.stringify({ email, password }))
+  if (args['email'] || args['password']) await fs.writeFileSync(path.join(__dirname, '../data/user.json'), JSON.stringify({ email: EMAIL, password: PASSWORD }))
 
   Log.print(chalk.blue('[User Config]'))
-  Log.info(`Email - ${email}`)
-  Log.info(`Password - ${'*'.repeat(password.length)}`)
+  Log.info(`email - ${EMAIL}`)
+  Log.info(`password - ${'*'.repeat(PASSWORD.length)}`)
 }
