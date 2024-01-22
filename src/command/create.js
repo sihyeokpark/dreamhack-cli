@@ -60,7 +60,8 @@ export default async function create(wargameLink) {
     const buildSuccess = await docker.buildCompose();
     (buildSuccess) ? Log.success('Docker Compose Build Success') : Log.error('Docker Compose Build Fail')
     if (buildSuccess) {
-      await docker.getPort()
+      // Todo - Fix getPort
+      // await docker.getPort()
     } else {
       process.exit(1)
     }
