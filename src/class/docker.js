@@ -22,7 +22,7 @@ export default class Docker {
 
   async buildCompose(){
     try{
-      const cmd = `docker compose -f ${this.path}/docker-compose.yml up -d`
+      const cmd = `docker-compose -f ${this.path}/docker-compose.yml up -d`
       Log.info(`Docker Compose Build - ${cmd}`)
       await execSync(cmd, { stdio: 'ignore' })
       return true
