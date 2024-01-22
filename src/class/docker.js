@@ -22,6 +22,9 @@ export default class Docker {
 
   async buildCompose(){
     try{
+
+      this.path = this.path.toLowerCase().replaceAll(/[^\w\s]/g, '_')
+
       const cmd = `docker-compose -f ${this.path}/docker-compose.yml up -d`
       Log.info(`Docker Compose Build - ${cmd}`)
       await execSync(cmd, { stdio: 'ignore' })
