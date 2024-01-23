@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-
+import fs from "fs"
 import Log from '../util/log.js'
 
 export default class Docker {
@@ -17,6 +17,23 @@ export default class Docker {
     } catch (err) {
       Log.error(`Docker Build Error: ${err}`)
       return false
+    }
+  }
+
+  async buildCompose(){
+    if (fs.existsSync(`${this.path}/docker-compose.yml`)){
+      try{
+        const cmd = `docker-compose -f ${this.path}/docker-compose.yml up -d`
+        Log.info(`Docker Compose Build - ${cmd}`)
+        await execSync(cmd, { stdio: 'ignore' })
+        return true
+      } catch (err) {
+        Log.error(`Docker Compose Build Error: ${err}`)
+        return false
+      }
+    }
+    else {
+      Log.error(`Not found Docker Compose file at ${this.path}/docker-compose.yml`)
     }
   }
   
