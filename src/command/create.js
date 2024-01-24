@@ -47,23 +47,18 @@ export default async function create(wargameLink) {
 
   if (args['d'] || args['docker']) {
     const docker = new Docker(wargame.name, `./${wargame.name}`)
-    const buildSuccess = await docker.build();
-    (buildSuccess) ? Log.success('Docker Build Success') : Log.error('Docker Build Fail')
-    if (buildSuccess) {
-      await docker.run()
+    const composeBuildSuccess = await docker.buildAndRunCompose()
+    if (composeBuildSuccess) {
+      Log.success('Docker Compose Build Success')
       await docker.getPort()
     } else {
-      process.exit(1)
-    }
-  } else if (args['c'] || args['compose']) {
-    const docker = new Docker(wargame.name, `./${wargame.name}`)
-    const buildSuccess = await docker.buildCompose();
-    (buildSuccess) ? Log.success('Docker Compose Build Success') : Log.error('Docker Compose Build Fail')
-    if (buildSuccess) {
-      // Todo - Fix getPort
-      // await docker.getPort()
-    } else {
-      process.exit(1)
+      Log.error('Docker Compose Build Fail')
+      const buildSuccess = await docker.build();
+      (buildSuccess) ? Log.success('Docker Build Success') : Log.error('Docker Build Fail')
+      if (buildSuccess) {
+        await docker.run()
+        await docker.getPort()
+      }
     }
   }
 

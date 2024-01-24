@@ -6,6 +6,7 @@ export default class Docker {
   constructor(name, path) {
     this.name = name.toLowerCase().replaceAll(/[^\w\s]/g, '_')
     this.path = path
+    this.type = '' // dockerfile, docker-compose
   }
 
   async build() {
@@ -13,6 +14,7 @@ export default class Docker {
       const cmd = `docker build -t ${this.name} ${this.path}`
       Log.info(`Docker Build - ${cmd}`)
       await execSync(cmd, { stdio: 'ignore' })
+      this.type = 'dockerfile'
       return true
     } catch (err) {
       Log.error(`Docker Build Error: ${err}`)
@@ -20,12 +22,13 @@ export default class Docker {
     }
   }
 
-  async buildCompose(){
+  async buildAndRunCompose(){
     if (fs.existsSync(`${this.path}/docker-compose.yml`)){
-      try{
+      try {
         const cmd = `docker-compose -f ${this.path}/docker-compose.yml up -d`
         Log.info(`Docker Compose Build - ${cmd}`)
         await execSync(cmd, { stdio: 'ignore' })
+        this.type = 'docker-compose'
         return true
       } catch (err) {
         Log.error(`Docker Compose Build Error: ${err}`)
@@ -34,6 +37,7 @@ export default class Docker {
     }
     else {
       Log.error(`Not found Docker Compose file at ${this.path}/docker-compose.yml`)
+      return false
     }
   }
   
@@ -51,12 +55,22 @@ export default class Docker {
   }
 
   async getPort() {
-    const containers = await Docker.ps()
-    const container = containers.filter(container => container[0] === this.id)[0]
-    const port = container[5].split('->')[0].split(':')[1]
-    Log.success(`Link\n- http://localhost:${port}\n- localhost ${port}`)
+    if (this.type === 'docker-compose') {
+      const composeFile = await fs.readFileSync(`${this.path}/docker-compose.yml`, 'utf8')
+      let ports = composeFile.match(/ports:[\s\S]*?"(\d+:\d+)"/g)
+      ports = ports.map(match => match.match(/(\d+:\d+)/)[0].split(':'))
+      ports.forEach((port) => {
+        Log.success(`Link\n- http://localhost:${port[0]}\n- localhost ${port[0]}`)
+      })
+      
+    } else if (this.type === 'dockerfile') {
+      const containers = await Docker.ps()
+      const container = containers.filter(container => container[0] === this.id)[0]
+      const port = container[5].split('->')[0].split(':')[1]
+      Log.success(`Link\n- http://localhost:${port}\n- localhost ${port}`)
 
-    return port
+      return port
+    }
   }
 
   static async getDockerfile() {
