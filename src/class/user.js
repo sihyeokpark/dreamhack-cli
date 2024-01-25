@@ -13,7 +13,7 @@ export default class User {
   async login() {
     let loginPage
     try {
-      loginPage = await axios.post(`${DREAMHACK.url}/api/v1/auth/login/`, {
+      loginPage = await axios.post(`${DREAMHACK.api}/auth/login/`, {
         email: this.email,
         password: this.password,
         saveLogin: true

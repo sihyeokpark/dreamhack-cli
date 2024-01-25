@@ -1,10 +1,11 @@
 import axios from 'axios'
 
+import DREAMHACK from '../data/dreamhack.js'
 import Log from '../util/log.js'
 
 export default class Wargame {
   constructor(link) {
-    this.link = link
+    this.link = DREAMHACK.api + link.split('dreamhack.io')[1]
   }
 
   async init(sessionid) {
@@ -13,9 +14,10 @@ export default class Wargame {
         Cookie: `sessionid=${sessionid}`
       }
     })
+    const wargameJSON = wargamePage.data
   
-    this.name = wargamePage.data.split('class="challenge-info"')[1].split('</h1>')[0].split('>').at(-1).replaceAll(' ', '_').replace(':', '')
+    this.name = wargameJSON.title
     Log.info(`Wargame Name - ${this.name}`)
-    this.downloadLink = 'https://sfo2.digitaloceanspaces.com/' + wargamePage.data.split('" target="_blank" class="challenge-download"')[0].split('<a href="https://sfo2.digitaloceanspaces.com/')[1].replaceAll('amp;', '')
+    this.downloadLink = wargameJSON.public
   }
 }
