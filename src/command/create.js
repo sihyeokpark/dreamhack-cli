@@ -31,10 +31,10 @@ export default async function create(wargameLink) {
   }
 
   const user = new User(EMAIL, PASSWORD)
-  const sessionid = await user.login()
+  const cookie = await user.login()
 
   const wargame = new Wargame(wargameLink)
-  await wargame.init(sessionid)
+  await wargame.init(cookie['sessionid'])
 
   await downloadFile(wargame.downloadLink, `${wargame.name}.zip`)
   Log.info('Wargame Downloaded')
@@ -61,6 +61,4 @@ export default async function create(wargameLink) {
       }
     }
   }
-
-  console.log()
 }
