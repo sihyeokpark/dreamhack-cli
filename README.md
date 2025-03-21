@@ -1,6 +1,8 @@
 # dreamhack-cli
 > dreamhack-cli는 드림핵 문제 풀이 환경을 더 쉽고 간편하게 설정하는 툴입니다.
 
+> **2025년 11월까진 개발자의 개인사정으로 유지보수가 불가능합니다**
+
 ![Alt text](<preview.png>)
 
 ## how to use?
