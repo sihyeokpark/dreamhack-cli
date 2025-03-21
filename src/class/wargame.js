@@ -24,7 +24,7 @@ export default class Wargame {
     })
     const wargameJSON = wargamePage.data
   
-    this.name = wargameJSON.title
+    this.name = wargameJSON.title.toLowerCase().replaceAll(/[^\w\s]/g, '_')
     Log.info(`Wargame Name - ${this.name}`)
     this.downloadLink = wargameJSON.public
   }
