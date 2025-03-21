@@ -26,6 +26,6 @@ export default class User {
     const sessionid = loginPage.headers['set-cookie'][1].split('sessionid=')[1].split(';')[0]
     Log.success(`Login - sessionid=${sessionid}`)
   
-    return sessionid
+    return { 'sessionid': sessionid, 'csrf_token': csrfToken }
   }
 }
